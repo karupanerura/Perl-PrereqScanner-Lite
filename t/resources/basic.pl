@@ -21,6 +21,7 @@ use lib "$FinBin::Bin/../lib";
 use constant FOO => 'BAR';
 use aliased 'Perl::PrereqScanner' => 'P::PS';
 use aliased "Perl::PrereqScanner::Lite" => 'P::PS::Lite';
+use Collision::2D;
 require TieHash;
 require Text::Tabs;
 require "Text/Soundex.pm"; # <= should be ignored

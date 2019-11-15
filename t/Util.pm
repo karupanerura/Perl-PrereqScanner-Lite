@@ -59,6 +59,7 @@ sub prereqs_ok {
         'Moose' => 0,
         'Any::Moose' => 0,
         'if' => 0,
+        'Collision::2D' => 0,
     });
 }
 
