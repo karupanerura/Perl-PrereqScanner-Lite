@@ -270,19 +270,29 @@ sub _scan {
                         my $perl_version = $token->{data};
                         $latest_prereq = $self->add_minimum('perl' => $perl_version);
                         $is_in_usedecl = 0;
+                        $is_prev_module_name = 0;
+                        $is_prev_version = 1;
                     }
                 }
-                elsif($is_prev_module_name) {
-                    # For module version
-                    # e.g.
-                    #   use Foo::Bar 0.0.1;'
-                    #   use Foo::Bar v0.0.1;
-                    #   use Foo::Bar 0.0_1;
-                    $module_version = $token->{data};
+                elsif ($is_prev_module_name) {
+                    if (substr($module_name, length($module_name)-2) eq '::') {
+                        # XXX: For module name includes number (workaround)
+                        # e.g.
+                        #   use Collision::2D;' # => $module_name = 'Collision::' and $token->{data} = '2D'
+                        $module_name .= $token->{data};
+                    }
+                    else {
+                        # For module version
+                        # e.g.
+                        #   use Foo::Bar 0.0.1;'
+                        #   use Foo::Bar v0.0.1;
+                        #   use Foo::Bar 0.0_1;
+                        $module_version = $token->{data};
+                        $is_prev_module_name = 0;
+                        $is_prev_version = 1;
+                    }
                 }
 
-                $is_prev_module_name = 0;
-                $is_prev_version = 1;
                 next;
             }
 
